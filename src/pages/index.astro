@@ -1,0 +1,205 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Brand from '../components/Brand.astro';
+import ButtonLink from '../components/ButtonLink.astro';
+import Icon from '../components/Icon.astro';
+import OpportunityGraphic from '../components/OpportunityGraphic.astro';
+import RotatingWord from '../components/RotatingWord.astro';
+import ContactOptions from '../components/ContactOptions.astro';
+import AnnouncementBanner from '../components/AnnouncementBanner.astro';
+import { helpAreas, steps } from '../data/site';
+---
+
+<BaseLayout title="Sidecar — AI implementation to make business easier">
+  <a href="#main" class="skip-link">
+    Skip to content
+  </a>
+  <AnnouncementBanner />
+  <header class="site-header container">
+    <Brand />
+    <nav aria-label="Main navigation">
+      <a href="#help">Where we can help</a>
+      <a href="#services">What we do</a>
+      <a href="#about">Why Sidecar</a>
+    </nav>
+    <a class="header-cta" href="#contact">
+      Let’s talk <Icon name="arrow" />
+    </a>
+  </header>
+
+  <main id="main">
+    <section class="hero container" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <h1 id="hero-title" aria-label="Make your business easier to run.">
+          <span class="hero-title-opening">Make your business</span>
+          <span class="hero-title-ending">
+            <RotatingWord />
+            <span class="hero-title-suffix">
+              to run<span class="accent-text">.</span>
+            </span>
+          </span>
+        </h1>
+        <p class="hero-lead">
+          Less manual work. Better-connected systems.
+          <br class="desktop-break" /> More room to grow.
+        </p>
+        <p class="hero-description">
+          We help established businesses find what’s slowing them down and build
+          practical solutions to move forward. From smarter workflows to
+          automation and AI, we make technology work for you.
+        </p>
+        <div class="hero-actions">
+          <ButtonLink href="#opportunity-review">
+            Find your opportunities
+          </ButtonLink>
+          <ButtonLink href="#services" variant="text">
+            See what we do
+          </ButtonLink>
+        </div>
+      </div>
+      <OpportunityGraphic />
+    </section>
+
+    <section
+      id="opportunity-review"
+      class="opportunity-section section-pad"
+      aria-labelledby="opportunity-title"
+    >
+      <div class="container split-layout">
+        <div class="opportunity-intro">
+          <h2 id="opportunity-title">
+            What could your business be doing better?
+          </h2>
+        </div>
+        <div class="opportunity-copy">
+          <p>
+            Every business has processes that take more time than they should.
+            Let’s uncover what’s slowing you down and explore what’s possible.
+          </p>
+          <p>
+            Tell us what’s slowing you down and we’ll review your business and
+            send you a personalized breakdown of where AI, automation, and
+            better-connected systems could save time and improve how you work.
+          </p>
+          <p class="opportunity-lead">
+            <strong>Free, practical recommendations. No obligation.</strong>
+          </p>
+          <ButtonLink href="#contact">Find your opportunities</ButtonLink>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="help"
+      class="outcomes-section container section-pad"
+      aria-labelledby="help-title"
+    >
+      <div class="section-heading">
+        <p class="eyebrow">Where we can help</p>
+        <h2 id="help-title">
+          Small changes.
+          <br />
+          Meaningful impact.
+        </h2>
+      </div>
+      <div class="outcomes-grid">
+        {helpAreas.map((area) => (
+          <article class="outcome">
+            <div class="outcome-icon">
+              <Icon name={area.icon} />
+            </div>
+            <h3>{area.title}</h3>
+            <p>{area.description}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section
+      id="services"
+      class="approach-section section-pad"
+      aria-labelledby="services-title"
+    >
+      <div class="container">
+        <div class="approach-heading">
+          <div>
+            <p class="eyebrow">What we do</p>
+            <h2 id="services-title">
+              The right solution.
+              <br />
+              Not just more software.
+            </h2>
+          </div>
+          <div class="approach-copy">
+            <p>
+              We don’t believe every problem needs a custom application or the
+              latest AI tool.
+            </p>
+            <p>
+              Sometimes the answer is something you already own. Other times
+              it’s connecting systems, introducing automation, or building
+              something new.
+            </p>
+          </div>
+        </div>
+        <ol class="steps">
+          {steps.map((step, index) => (
+            <li>
+              <div class="step-top">
+                <span>0{index + 1}</span>
+                <Icon name="arrow" />
+              </div>
+              <h3>{step.title}</h3>
+              <p>{step.description}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section
+      id="about"
+      class="about-section container section-pad"
+      aria-labelledby="about-title"
+    >
+      <figure class="founder-photo">
+        <img
+          src="/imgs/brett-wagner.jpg"
+          alt="Brett Wagner, founder of Sidecar"
+          width="1587"
+          height="1050"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+      <div class="about-copy">
+        <p class="eyebrow">Why Sidecar</p>
+        <h2 id="about-title">
+          Built for business.
+          <br />
+          Grounded in experience.
+        </h2>
+        <p class="founder-name">Brett Wagner — Founder, Sidecar</p>
+        <p>
+          I’ve spent my career working across product, design, and technology,
+          while also running businesses myself. That combination gives me a
+          practical understanding of how businesses operate, where things get
+          complicated, and how technology can make a difference.
+        </p>
+        <p>
+          Sidecar brings those perspectives together to find meaningful
+          improvements and make them happen.
+        </p>
+      </div>
+    </section>
+
+    <ContactOptions />
+  </main>
+
+  <footer class="site-footer container">
+    <Brand />
+    <div>
+      <span>© {new Date().getFullYear()} Sidecar</span>
+    </div>
+  </footer>
+</BaseLayout>

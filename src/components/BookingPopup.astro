@@ -1,0 +1,145 @@
+---
+import { site } from '../data/site';
+---
+
+<dialog
+  id="booking-dialog"
+  class="booking-dialog"
+  aria-labelledby="booking-title"
+>
+  <div class="booking-shell">
+    <header class="booking-header">
+      <h2 id="booking-title">Book a quick chat</h2>
+      <button
+        type="button"
+        class="dialog-close"
+        data-close-booking
+        aria-label="Close booking calendar"
+        autofocus
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="m5 5 10 10M15 5 5 15"
+            stroke="currentColor"
+            stroke-width="1.6"
+          />
+        </svg>
+      </button>
+    </header>
+    <iframe
+      data-booking-url={site.calendlyUrl}
+      title="Schedule a 15-minute chat with Brett Wagner on Calendly"
+    ></iframe>
+    <p class="booking-fallback">
+      Having trouble? <a href={site.calendlyUrl}>Open Calendly directly</a>.
+    </p>
+  </div>
+</dialog>
+
+<script>
+  const bookingDialog =
+    document.querySelector<HTMLDialogElement>('#booking-dialog');
+  const bookingLink = document.querySelector<HTMLAnchorElement>(
+    '[data-open-booking]',
+  );
+  const bookingFrame =
+    bookingDialog?.querySelector<HTMLIFrameElement>('iframe');
+  const bookingClose = bookingDialog?.querySelector<HTMLButtonElement>(
+    '[data-close-booking]',
+  );
+
+  if (bookingDialog && bookingLink && bookingFrame && bookingClose) {
+    bookingLink.addEventListener('click', (event) => {
+      event.preventDefault();
+      if (!bookingFrame.getAttribute('src')) {
+        bookingFrame.src = bookingFrame.dataset.bookingUrl ?? bookingLink.href;
+      }
+      bookingDialog.showModal();
+    });
+    bookingClose.addEventListener('click', () => bookingDialog.close());
+    bookingDialog.addEventListener('click', (event) => {
+      const bounds = bookingDialog.getBoundingClientRect();
+      if (
+        event.target === bookingDialog &&
+        (event.clientX < bounds.left ||
+          event.clientX > bounds.right ||
+          event.clientY < bounds.top ||
+          event.clientY > bounds.bottom)
+      )
+        bookingDialog.close();
+    });
+  }
+</script>
+
+<style>
+  .booking-dialog {
+    width: min(1040px, calc(100% - 40px));
+    max-width: none;
+    max-height: calc(100dvh - 40px);
+    margin: auto;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    background: var(--color-background);
+    color: var(--color-text);
+  }
+  .booking-dialog::backdrop {
+    background: rgb(20 34 26 / 58%);
+  }
+  .booking-shell {
+    display: flex;
+    flex-direction: column;
+    height: min(800px, calc(100dvh - 42px));
+  }
+  .booking-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .booking-header h2 {
+    font-size: 20px;
+    letter-spacing: -0.035em;
+  }
+  .booking-header .dialog-close {
+    position: static;
+    flex-shrink: 0;
+  }
+  iframe {
+    display: block;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    border: 0;
+    background: white;
+  }
+  .booking-fallback {
+    padding: 10px 20px;
+    font-size: 12px;
+    text-align: center;
+  }
+  .booking-fallback a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  :global(body:has(.booking-dialog[open])) {
+    overflow: hidden;
+  }
+  @media (max-width: 480px) {
+    .booking-dialog {
+      width: 100%;
+      max-height: 100dvh;
+      border: 0;
+    }
+    .booking-shell {
+      height: 100dvh;
+    }
+  }
+</style>

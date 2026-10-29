@@ -1,0 +1,349 @@
+---
+import Icon from './Icon.astro';
+import BookingPopup from './BookingPopup.astro';
+import { site } from '../data/site';
+---
+
+<section
+  id="contact"
+  class="review-section section-pad"
+  aria-labelledby="contact-title"
+>
+  <div class="container">
+    <div class="contact-heading">
+      <h2 id="contact-title">
+        There’s probably
+        <br />a better way
+        <br />
+        to do <span class="serif-emphasis">that.</span>
+      </h2>
+      <div class="contact-summary">
+        <p>
+          We’ll review your business and send you a personalized snapshot of
+          where AI, automation, and better-connected systems could make a
+          difference.
+        </p>
+        <p class="contact-summary-label">
+          <strong>What you’ll get:</strong>
+        </p>
+        <ul>
+          <li>
+            <span class="contact-benefit-check">
+              <Icon name="check" />
+            </span>
+            <span>
+              <strong>Opportunities</strong> — What’s worth improving
+            </span>
+          </li>
+          <li>
+            <span class="contact-benefit-check">
+              <Icon name="check" />
+            </span>
+            <span>
+              <strong>Solutions</strong> — Tools and approaches worth exploring
+            </span>
+          </li>
+          <li>
+            <span class="contact-benefit-check">
+              <Icon name="check" />
+            </span>
+            <span>
+              <strong>Next steps</strong> — Where we’d recommend starting
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <ol class="contact-options">
+      <li>
+        <div class="contact-option-meta">
+          <span>15-minute call</span>
+        </div>
+        <h3>Let’s talk</h3>
+        <p>
+          Have 15 minutes? Let’s talk about your business, what’s slowing you
+          down, and where technology might help.
+        </p>
+        <div class="contact-action">
+          <a
+            class="button button-dark"
+            href={site.calendlyUrl}
+            data-open-booking
+            aria-haspopup="dialog"
+            aria-controls="booking-dialog"
+          >
+            <span>Book a quick chat</span>
+            <Icon name="arrow" />
+          </a>
+          <p class="contact-action-note">Opens calendar on this page</p>
+        </div>
+      </li>
+      <li>
+        <div class="contact-option-meta">
+          <span>3-field form · no call needed</span>
+        </div>
+        <h3>Send us a challenge</h3>
+        <p>
+          Not ready for a call? Tell us a little about your business and what’s
+          taking up your time. We’ll take a look and share some thoughts.
+        </p>
+        <div class="contact-action">
+          <button
+            type="button"
+            class="button button-dark"
+            data-open-challenge
+            aria-haspopup="dialog"
+            aria-controls="challenge-dialog"
+          >
+            <span>Share your challenge</span>
+            <Icon name="arrow" />
+          </button>
+          <p class="contact-action-note">Opens short form</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+
+  <BookingPopup />
+
+  <dialog
+    id="challenge-dialog"
+    class="challenge-dialog"
+    aria-labelledby="challenge-title"
+    aria-describedby="challenge-intro"
+  >
+    <button
+      type="button"
+      class="dialog-close"
+      data-close-challenge
+      aria-label="Close challenge form"
+    >
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="m5 5 10 10M15 5 5 15"
+          stroke="currentColor"
+          stroke-width="1.6"
+        />
+      </svg>
+    </button>
+    <h2 id="challenge-title" class="dialog-title">
+      Tell us what’s
+      <br />
+      slowing you down.
+    </h2>
+    <p id="challenge-intro">Start with one thing you wish worked better.</p>
+    <form
+      action="https://api.web3forms.com/submit"
+      method="POST"
+      class="challenge-form"
+    >
+      <input type="hidden" name="access_key" value={site.challengeFormKey} />
+      <input
+        type="hidden"
+        name="subject"
+        value="New Sidecar opportunity inquiry"
+      />
+      <input type="hidden" name="from_name" value="Sidecar website" />
+      <input
+        type="checkbox"
+        name="botcheck"
+        class="challenge-botcheck"
+        tabindex="-1"
+        aria-hidden="true"
+      />
+      <div class="challenge-field">
+        <label for="challenge-detail">
+          What’s something you wish worked better?{' '}
+          <span aria-hidden="true">*</span>
+        </label>
+        <textarea
+          id="challenge-detail"
+          name="message"
+          rows="4"
+          placeholder="For example, preparing quotes takes hours and we’re still copying information between tools…"
+          required
+          maxlength="5000"
+          autofocus
+        ></textarea>
+      </div>
+      <div class="challenge-fields-row">
+        <div class="challenge-field">
+          <label for="challenge-website">
+            Company website <span aria-hidden="true">*</span>
+          </label>
+          <input
+            id="challenge-website"
+            name="website"
+            type="text"
+            inputmode="url"
+            autocomplete="url"
+            autocapitalize="none"
+            spellcheck="false"
+            placeholder="yourcompany.com"
+            required
+            maxlength="500"
+          />
+        </div>
+        <div class="challenge-field">
+          <label for="challenge-email">
+            Your email <span aria-hidden="true">*</span>
+          </label>
+          <input
+            id="challenge-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            placeholder="you@yourcompany.com"
+            required
+            maxlength="254"
+          />
+        </div>
+      </div>
+      <button type="submit" class="button button-primary">
+        <span>Send your challenge</span>
+        <Icon name="arrow" />
+      </button>
+      <p
+        class="challenge-status"
+        role="status"
+        aria-live="polite"
+        tabindex="-1"
+      ></p>
+      <p class="challenge-contact-fallback" hidden>
+        You can also email <a href={`mailto:${site.email}`}>{site.email}</a>.
+      </p>
+    </form>
+  </dialog>
+</section>
+
+<script>
+  import { normalizeWebsite } from '../lib/normalizeWebsite';
+  import {
+    ChallengeSubmissionError,
+    submitChallenge,
+  } from '../lib/submitChallenge';
+
+  const dialog = document.querySelector<HTMLDialogElement>('#challenge-dialog');
+  const openButton = document.querySelector<HTMLButtonElement>(
+    '[data-open-challenge]',
+  );
+  const closeButton = dialog?.querySelector<HTMLButtonElement>(
+    '[data-close-challenge]',
+  );
+  const form = dialog?.querySelector<HTMLFormElement>('.challenge-form');
+  const status = dialog?.querySelector<HTMLElement>('.challenge-status');
+  const fallback = dialog?.querySelector<HTMLElement>(
+    '.challenge-contact-fallback',
+  );
+  const submitButton =
+    form?.querySelector<HTMLButtonElement>('[type="submit"]');
+  const submitLabel = submitButton?.querySelector('span');
+  const challengeField =
+    form?.querySelector<HTMLTextAreaElement>('#challenge-detail');
+  const websiteField =
+    form?.querySelector<HTMLInputElement>('#challenge-website');
+
+  if (
+    dialog &&
+    openButton &&
+    closeButton &&
+    form &&
+    status &&
+    fallback &&
+    submitButton &&
+    submitLabel &&
+    challengeField &&
+    websiteField
+  ) {
+    let submitting = false;
+    const validateWebsite = () => {
+      const website = normalizeWebsite(websiteField.value);
+      websiteField.setCustomValidity(
+        websiteField.value && !website
+          ? 'Enter a valid website, such as yourcompany.com. HTTPS and www are optional.'
+          : '',
+      );
+      return website;
+    };
+    websiteField.addEventListener('input', validateWebsite);
+    const clearFeedback = () => {
+      if (submitting) return;
+      status.textContent = '';
+      delete status.dataset.state;
+      fallback.hidden = true;
+      challengeField.setCustomValidity('');
+    };
+
+    openButton.addEventListener('click', () => {
+      clearFeedback();
+      dialog.showModal();
+    });
+    closeButton.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (event) => {
+      const bounds = dialog.getBoundingClientRect();
+      if (
+        event.target === dialog &&
+        (event.clientX < bounds.left ||
+          event.clientX > bounds.right ||
+          event.clientY < bounds.top ||
+          event.clientY > bounds.bottom)
+      )
+        dialog.close();
+    });
+    form.addEventListener('input', clearFeedback);
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (submitting) return;
+      clearFeedback();
+      const fields = new FormData(form);
+      const challenge = String(fields.get('message') ?? '').trim();
+      if (!challenge) {
+        challengeField.setCustomValidity(
+          'Tell us a little about what you wish worked better.',
+        );
+        challengeField.reportValidity();
+        return;
+      }
+      const website = validateWebsite();
+      if (!website) {
+        websiteField.reportValidity();
+        return;
+      }
+      fields.set('message', challenge);
+      fields.set('website', website);
+      submitting = true;
+      submitButton.disabled = true;
+      submitLabel.textContent = 'Sending…';
+      form.setAttribute('aria-busy', 'true');
+      status.textContent = 'Sending your challenge…';
+
+      try {
+        await submitChallenge(fields);
+        form.reset();
+        status.dataset.state = 'success';
+        status.textContent =
+          'Thanks! Your challenge has been sent. We’ll review it and get back to you by email.';
+      } catch (error) {
+        status.dataset.state = 'error';
+        status.textContent =
+          error instanceof ChallengeSubmissionError
+            ? error.message
+            : 'We couldn’t confirm your message was sent. Please try again or email us directly.';
+        fallback.hidden = false;
+      } finally {
+        submitting = false;
+        submitButton.disabled = false;
+        submitLabel.textContent = 'Send your challenge';
+        form.removeAttribute('aria-busy');
+        if (dialog.open) status.focus();
+      }
+    });
+  }
+</script>
