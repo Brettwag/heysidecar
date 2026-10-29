@@ -61,13 +61,13 @@ Automatic Git deployments are not configured yet. To enable them:
 2. Select Node.js 24.13.1, repository root as the build directory, `npm run validate` as the build command, and `npx wrangler deploy` as the deploy command.
 3. Verify the deployment at its Cloudflare address before making further DNS changes.
 
-The GitHub Actions workflow checks pull requests and pushes to `main`. It does not deploy. The original `CNAME` is retained in `public/` for reference and compatibility; it does not configure Cloudflare DNS. A future GitHub Pages deployment would need to publish `dist/`, rather than the repository root.
+The GitHub Actions workflow checks pull requests and pushes to `main`. It does not deploy. GitHub Pages is set to the GitHub Actions source, with no Pages deployment workflow, so commits no longer trigger the old branch-based Pages build. The previously published GitHub page remains available temporarily for visitors whose DNS caches still resolve the former GitHub hosting. Unpublish it in the repository's Pages settings after DNS propagation is complete. The original `CNAME` is retained in `public/` for reference; it does not configure Cloudflare DNS.
 
 ## Challenge form
 
 The three-field challenge form submits directly to [Web3Forms](https://web3forms.com/) and delivers inquiries to the verified inbox associated with `site.challengeFormKey` in `src/data/site.ts`. The form routing key is intentionally public and safe to include in browser code; never replace it with an account API token. No backend, database, or email-domain changes are required.
 
-The free plan currently allows 250 submissions per month. The form includes a hidden honeypot, required field validation, duplicate-click prevention, and inline success/error feedback. Failed requests preserve the visitor’s input and offer an email alternative. The honeypot is basic spam protection; if spam becomes a problem, Web3Forms supports free hCaptcha through its form settings.
+The free plan currently allows 250 submissions per month. The form uses a hidden honeypot, required field validation, duplicate-click prevention, and inline success/error feedback. CAPTCHA is currently disabled in the website code; keep the form’s Web3Forms spam settings configured without a CAPTCHA requirement so submissions are accepted. Failed requests preserve the visitor’s input and offer an email alternative.
 
 Before launch, send a labeled test inquiry and confirm receipt in `brett@heysidecar.com` (including spam). A local build or mocked API test does not verify inbox delivery. Monitor the submission allowance in the Web3Forms dashboard.
 

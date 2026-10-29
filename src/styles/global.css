@@ -768,13 +768,6 @@ h3 {
   font-size: 11px;
   color: var(--color-muted);
 }
-.not-found {
-  padding-block: 120px;
-  min-height: 70vh;
-}
-.not-found p {
-  margin-block: 24px;
-}
 @media (min-width: 1500px) {
   .hero {
     padding-block: 100px 120px;
