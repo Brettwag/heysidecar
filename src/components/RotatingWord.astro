@@ -1,0 +1,81 @@
+---
+const words = ['easier', 'faster', 'fun', 'more profitable'];
+---
+
+<rotating-word class="rotating-word">
+  <span class="sr-only">easier</span>
+  <span class="rotating-word-track serif-emphasis" aria-hidden="true">
+    {words.map((word, index) => (
+      <span
+        class="rotating-word-option"
+        data-active={index === 0 ? '' : undefined}
+      >
+        {word}
+      </span>
+    ))}
+  </span>
+</rotating-word>
+
+<script>
+  class RotatingWord extends HTMLElement {
+    private timer: number | undefined;
+    private cleanup: (() => void) | undefined;
+
+    connectedCallback() {
+      const options = Array.from(
+        this.querySelectorAll<HTMLElement>('.rotating-word-option'),
+      );
+      if (options.length < 2) return;
+
+      const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let current = 0;
+
+      const fitWord = () => {
+        this.style.width = `${options[current].getBoundingClientRect().width + 2}px`;
+      };
+
+      const showWord = (index: number) => {
+        current = index;
+        options.forEach((option, position) => {
+          option.toggleAttribute('data-active', position === current);
+        });
+        fitWord();
+      };
+
+      const syncPlayback = () => {
+        window.clearInterval(this.timer);
+        this.timer = undefined;
+        if (motion.matches) {
+          showWord(0);
+        } else if (!document.hidden) {
+          this.timer = window.setInterval(() => {
+            showWord((current + 1) % options.length);
+          }, 3000);
+        }
+      };
+
+      motion.addEventListener('change', syncPlayback);
+      document.addEventListener('visibilitychange', syncPlayback);
+      window.addEventListener('resize', fitWord);
+      document.fonts.ready.then(() => {
+        if (this.isConnected) fitWord();
+      });
+      this.cleanup = () => {
+        motion.removeEventListener('change', syncPlayback);
+        document.removeEventListener('visibilitychange', syncPlayback);
+        window.removeEventListener('resize', fitWord);
+      };
+      fitWord();
+      syncPlayback();
+    }
+
+    disconnectedCallback() {
+      window.clearInterval(this.timer);
+      this.cleanup?.();
+    }
+  }
+
+  if (!customElements.get('rotating-word')) {
+    customElements.define('rotating-word', RotatingWord);
+  }
+</script>
